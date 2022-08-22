@@ -8,7 +8,7 @@ import Basement from './Basement';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
-		<Canvas style={{ width: '100vw', height: '100vh' }}>
+		<Canvas style={{ width: '100%', height: 'calc(100vh - 16px)' }}>
 			<ambientLight intensity={0.5} />
 			<spotLight intensity={0.3} position={[ 5, 20, 20 ]} />
 			<Suspense fallback={null}>
