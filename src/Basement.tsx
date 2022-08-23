@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 
@@ -94,7 +94,12 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 		'/myProjectWebHologramDecimate-processed.glb'
 	) as GLTFResult;
 	const { actions } = useAnimations(animations, group);
+
 	// useMemo(() => scene.traverse((obj) => (obj.frustumCulled = false)), [ scene ]);
+
+	useEffect(() => {
+		actions['Typing (5)|A|Layer0']?.play();
+	}, [actions]);
 
 	return (
 		<group ref={group} {...props} dispose={null}>

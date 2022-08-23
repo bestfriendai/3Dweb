@@ -15,6 +15,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
 				<Basement position={[ 0, -1, 0 ]} />
 			</Suspense>
 			<OrbitControls />
+			<color attach="background" args={[ '#000000' ]} />
 		</Canvas>
 	</React.StrictMode>
 );
