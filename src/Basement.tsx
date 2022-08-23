@@ -1,7 +1,6 @@
 import * as THREE from 'three';
-import React, { useRef, useState, Suspense } from 'react';
-import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
-import { useGLTF, useAnimations, OrbitControls } from '@react-three/drei';
+import React, { useRef, useMemo } from 'react';
+import { useGLTF, useAnimations } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 
 type GLTFResult = GLTF & {
@@ -91,11 +90,15 @@ interface GLTFAction extends THREE.AnimationClip {
 
 export function Basement(props: JSX.IntrinsicElements['group']) {
 	const group = useRef<THREE.Group>(null);
-	const { nodes, materials, animations } = useGLTF('/myProjectWebHologramDecimate-processed.glb') as GLTFResult;
+	const { nodes, materials, animations, scene } = useGLTF(
+		'/myProjectWebHologramDecimate-processed.glb'
+	) as GLTFResult;
 	const { actions } = useAnimations(animations, group);
+	// useMemo(() => scene.traverse((obj) => (obj.frustumCulled = false)), [ scene ]);
+
 	return (
 		<group ref={group} {...props} dispose={null}>
-			<group name="Scene">
+			<group name="Scene" frustumCulled={false}>
 				<group
 					name="Typing_(5)"
 					position={[ -0.03, -0.01, 0.57 ]}
@@ -108,60 +111,70 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 						geometry={nodes.CC_Base_Body003.geometry}
 						material={materials.hologram}
 						skeleton={nodes.CC_Base_Body003.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_Eye003"
 						geometry={nodes.CC_Base_Eye003.geometry}
 						material={materials.hologram}
 						skeleton={nodes.CC_Base_Eye003.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_EyeOcclusion003"
 						geometry={nodes.CC_Base_EyeOcclusion003.geometry}
 						material={materials.hologram}
 						skeleton={nodes.CC_Base_EyeOcclusion003.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_TearLine003"
 						geometry={nodes.CC_Base_TearLine003.geometry}
 						material={materials.hologram}
 						skeleton={nodes.CC_Base_TearLine003.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_Teeth003"
 						geometry={nodes.CC_Base_Teeth003.geometry}
 						material={materials.hologram}
 						skeleton={nodes.CC_Base_Teeth003.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_Tongue003"
 						geometry={nodes.CC_Base_Tongue003.geometry}
 						material={materials.hologram}
 						skeleton={nodes.CC_Base_Tongue003.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="Jeans003"
 						geometry={nodes.Jeans003.geometry}
 						material={materials.hologram}
 						skeleton={nodes.Jeans003.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="Male_Bushy003"
 						geometry={nodes.Male_Bushy003.geometry}
 						material={materials.hologram}
 						skeleton={nodes.Male_Bushy003.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="Short_blowback003"
 						geometry={nodes.Short_blowback003.geometry}
 						material={materials['hologram hair']}
 						skeleton={nodes.Short_blowback003.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="Spaghetti_strap_Top003"
 						geometry={nodes.Spaghetti_strap_Top003.geometry}
 						material={materials.hologram}
 						skeleton={nodes.Spaghetti_strap_Top003.skeleton}
+						frustumCulled={false}
 					/>
 				</group>
 				<group name="Armature" position={[ 0.72, 0, 0.44 ]} rotation={[ Math.PI / 2, 0, 1.51 ]} scale={0.01}>
@@ -171,78 +184,91 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 						geometry={nodes.Bang001.geometry}
 						material={materials['hologram alternative hair']}
 						skeleton={nodes.Bang001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="Biker_Jeans001"
 						geometry={nodes.Biker_Jeans001.geometry}
 						material={materials['hologram alternative']}
 						skeleton={nodes.Biker_Jeans001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="Boxers001"
 						geometry={nodes.Boxers001.geometry}
 						material={materials['hologram alternative']}
 						skeleton={nodes.Boxers001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="Bun001"
 						geometry={nodes.Bun001.geometry}
 						material={materials['hologram alternative hair']}
 						skeleton={nodes.Bun001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_Body001"
 						geometry={nodes.CC_Base_Body001.geometry}
 						material={materials['hologram alternative']}
 						skeleton={nodes.CC_Base_Body001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_Eye001"
 						geometry={nodes.CC_Base_Eye001.geometry}
 						material={materials['hologram alternative']}
 						skeleton={nodes.CC_Base_Eye001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_EyeOcclusion001"
 						geometry={nodes.CC_Base_EyeOcclusion001.geometry}
 						material={materials['hologram alternative']}
 						skeleton={nodes.CC_Base_EyeOcclusion001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_TearLine001"
 						geometry={nodes.CC_Base_TearLine001.geometry}
 						material={materials['hologram alternative']}
 						skeleton={nodes.CC_Base_TearLine001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_Teeth001"
 						geometry={nodes.CC_Base_Teeth001.geometry}
 						material={materials['hologram alternative']}
 						skeleton={nodes.CC_Base_Teeth001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="CC_Base_Tongue001"
 						geometry={nodes.CC_Base_Tongue001.geometry}
 						material={materials['hologram alternative']}
 						skeleton={nodes.CC_Base_Tongue001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="Female_Angled001"
 						geometry={nodes.Female_Angled001.geometry}
 						material={materials['hologram alternative']}
 						skeleton={nodes.Female_Angled001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="Hair_Base001"
 						geometry={nodes.Hair_Base001.geometry}
 						material={materials['hologram alternative hair']}
 						skeleton={nodes.Hair_Base001.skeleton}
+						frustumCulled={false}
 					/>
 					<skinnedMesh
 						name="Real_Hair001"
 						geometry={nodes.Real_Hair001.geometry}
 						material={materials['hologram alternative hair']}
 						skeleton={nodes.Real_Hair001.skeleton}
+						frustumCulled={false}
 					/>
 				</group>
 				<mesh
