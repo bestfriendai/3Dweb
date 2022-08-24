@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import React, { useRef, useMemo, useEffect } from 'react';
+import React, { useRef, useMemo, useLayoutEffect, useState } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 
@@ -97,8 +97,23 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 
 	// useMemo(() => scene.traverse((obj) => (obj.frustumCulled = false)), [ scene ]);
 
-	useEffect(() => {
+	const [isVisible, setIsVisible] = useState(false)
+
+	useLayoutEffect(() => {
 		actions['Typing (5)|A|Layer0']?.play();
+		actions['Armature|mixamo.com|Layer0.001']?.play()
+		
+		const startAnimation = setTimeout(() => {
+			setIsVisible(true);
+		}, 17000);
+		const endAnimation = setTimeout(() => {
+			setIsVisible(false);
+			actions['Armature|mixamo.com|Layer0.001']?.stop()
+		}, 20400);
+		return () => {
+			clearTimeout(startAnimation); 
+			clearTimeout(endAnimation)
+		}
 	}, [actions]);
 
 	return (
@@ -109,6 +124,7 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 					position={[ -0.03, -0.01, 0.57 ]}
 					rotation={[ Math.PI / 2, 0, -3.04 ]}
 					scale={0.01}
+					
 				>
 					<primitive object={nodes.mixamorigHips} />
 					<skinnedMesh
@@ -182,7 +198,7 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 						frustumCulled={false}
 					/>
 				</group>
-				<group name="Armature" position={[ 0.72, 0, 0.44 ]} rotation={[ Math.PI / 2, 0, 1.51 ]} scale={0.01}>
+				<group name="Armature" position={[ 0.72, 0, 0.44 ]} rotation={[ Math.PI / 2, 0, 1.51 ]} scale={0.01} visible={isVisible}>
 					<primitive object={nodes.mixamorigHips_1} />
 					<skinnedMesh
 						name="Bang001"
@@ -190,6 +206,7 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 						material={materials['hologram alternative hair']}
 						skeleton={nodes.Bang001.skeleton}
 						frustumCulled={false}
+						
 					/>
 					<skinnedMesh
 						name="Biker_Jeans001"
