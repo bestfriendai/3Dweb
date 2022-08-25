@@ -1,29 +1,32 @@
 import * as THREE from 'three';
-import React, { Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import React, { Suspense, useRef } from 'react';
+
+import { OrbitControls, useHelper } from '@react-three/drei';
 import { angleToRadians } from './utils/angle';
+import { useControls } from 'leva';
 
 import Basement from './Basement';
+import { SpotLight, SpotLightHelper } from 'three';
 
 function App() {
+
+	const spotlightRef = useRef<SpotLight>(null!);
+	useHelper(spotlightRef, SpotLightHelper, 'red');
+
+	const { distance, intensity, angle } = useControls({ distance: { value: 5, min: 1, max: 10 }, intensity: {value: 1, min: 0, max: 5}, angle: {value: Math.PI / 6, min: 0.1, max: 1} });
 	return (
-		<Canvas
-			style={{ width: '100%', height: '100%', position: 'absolute', top: '0', left: '0' }}
-			camera={{ position: [ -40, 15, -40 ], fov: 3 }}
-		>
-			<ambientLight intensity={0.5} />
-			<spotLight intensity={0.3} position={[ 5, 20, 20 ]} />
+		<>
+			<spotLight color={'#3588FF'} ref={spotlightRef} position={[ 0, 5, 0 ]} distance={distance} intensity={intensity} angle={angle} />
 			<Suspense fallback={null}>
 				<Basement position={[ 0, -1, 0 ]} />
-				<mesh position={[ 0, -1, 0 ]} rotation={[ -angleToRadians(90), 0, 0 ]} receiveShadow>
+				<mesh position={[ 0, -1, 0 ]} rotation={[ -angleToRadians(90), 0, 0 ]} receiveShadow >
 					<planeGeometry args={[ 100, 100 ]} />
 					<meshStandardMaterial color={'#000000'} />
 				</mesh>
 			</Suspense>
 			<OrbitControls maxPolarAngle={Math.PI / 2} />
 			<color attach="background" args={[ '#000000' ]} />
-		</Canvas>
+            </>
 	);
 }
 
