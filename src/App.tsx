@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { createRoot } from 'react-dom/client';
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
@@ -22,7 +21,7 @@ function App() {
 					<meshStandardMaterial color={'#000000'} />
 				</mesh>
 			</Suspense>
-			<OrbitControls />
+			<OrbitControls maxPolarAngle={Math.PI / 2} />
 			<color attach="background" args={[ '#000000' ]} />
 		</Canvas>
 	);
