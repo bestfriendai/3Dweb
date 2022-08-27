@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import React, { useRef, useMemo, useLayoutEffect, useState } from 'react';
-import { useGLTF, useAnimations } from '@react-three/drei';
+import { useGLTF, useAnimations, useBounds } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 
 type GLTFResult = GLTF & {
@@ -99,6 +99,8 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 
 	const [isVisible, setIsVisible] = useState(false)
 
+	const api = useBounds()
+
 	useLayoutEffect(() => {
 		actions['Typing (5)|A|Layer0']?.play();
 		actions['Armature|mixamo.com|Layer0.001']?.play()
@@ -124,6 +126,7 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 					position={[ -0.03, -0.01, 0.57 ]}
 					rotation={[ Math.PI / 2, 0, -3.04 ]}
 					scale={0.01}
+					
 					
 				>
 					<primitive object={nodes.mixamorigHips} />
@@ -592,6 +595,10 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 					geometry={nodes.Monitor.geometry}
 					material={materials.hologram}
 					position={[ -0.18, 0.73, -0.29 ]}
+					onClick={e => (e.stopPropagation(), e.delta <= 2 && api.refresh(e.object).fit())}
+					onPointerMissed={(e) => e.button === 0 && api.refresh().fit()}
+					
+
 				/>
 				<mesh
 					name="LED_TV"
