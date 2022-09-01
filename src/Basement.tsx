@@ -120,7 +120,7 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 
 	return (
 		<group ref={group} {...props} dispose={null}>
-			<group name="Scene" frustumCulled={false}>
+			<group name="Scene" frustumCulled={false} scale={1000}>
 				<group
 					name="Typing_(5)"
 					position={[ -0.03, -0.01, 0.57 ]}
