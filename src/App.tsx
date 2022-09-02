@@ -28,7 +28,13 @@ function App() {
 					</mesh>
 				</Bounds>
 			</Suspense>
-			<OrbitControls makeDefault maxPolarAngle={Math.PI / 2} enablePan={false} enableDamping={true} />
+			<OrbitControls
+				makeDefault
+				maxPolarAngle={Math.PI / 2}
+				enablePan={false}
+				enableDamping={true}
+				zoomSpeed={2}
+			/>
 			<color attach="background" args={[ '#000000' ]} />
 		</React.Fragment>
 	);
