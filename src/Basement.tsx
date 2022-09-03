@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import React, { useRef, useMemo, useLayoutEffect, useState } from 'react';
 import { useGLTF, useAnimations, useBounds } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
+import img from './img/screenMyWeb.png';
+import { useLoader } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
 	nodes: {
@@ -94,29 +96,30 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 		'/myProjectWebHologramDecimate-processed.glb'
 	) as GLTFResult;
 	const { actions } = useAnimations(animations, group);
+	const textureImg = useLoader(THREE.TextureLoader, img);
 
 	// useMemo(() => scene.traverse((obj) => (obj.frustumCulled = false)), [ scene ]);
 
-	const [isVisible, setIsVisible] = useState(false)
+	const [ isVisible, setIsVisible ] = useState(false);
 
-	const api = useBounds()
+	const api = useBounds();
 
-	useLayoutEffect(() => {
-		actions['Typing (5)|A|Layer0']?.play();
-		actions['Armature|mixamo.com|Layer0.001']?.play()
-		
-		const startAnimation = setTimeout(() => {
-			setIsVisible(true);
-		}, 17000);
-		const endAnimation = setTimeout(() => {
-			setIsVisible(false);
-			actions['Armature|mixamo.com|Layer0.001']?.stop()
-		}, 20400);
-		return () => {
-			clearTimeout(startAnimation); 
-			clearTimeout(endAnimation)
-		}
-	}, [actions]);
+	// useLayoutEffect(() => {
+	// 	actions['Typing (5)|A|Layer0']?.play();
+	// 	actions['Armature|mixamo.com|Layer0.001']?.play()
+
+	// 	const startAnimation = setTimeout(() => {
+	// 		setIsVisible(true);
+	// 	}, 17000);
+	// 	const endAnimation = setTimeout(() => {
+	// 		setIsVisible(false);
+	// 		actions['Armature|mixamo.com|Layer0.001']?.stop()
+	// 	}, 20400);
+	// 	return () => {
+	// 		clearTimeout(startAnimation);
+	// 		clearTimeout(endAnimation)
+	// 	}
+	// }, [actions]);
 
 	return (
 		<group ref={group} {...props} dispose={null}>
@@ -126,8 +129,6 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 					position={[ -0.03, -0.01, 0.57 ]}
 					rotation={[ Math.PI / 2, 0, -3.04 ]}
 					scale={0.01}
-					
-					
 				>
 					<primitive object={nodes.mixamorigHips} />
 					<skinnedMesh
@@ -201,7 +202,13 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 						frustumCulled={false}
 					/>
 				</group>
-				<group name="Armature" position={[ 0.72, 0, 0.44 ]} rotation={[ Math.PI / 2, 0, 1.51 ]} scale={0.01} visible={isVisible}>
+				<group
+					name="Armature"
+					position={[ 0.72, 0, 0.44 ]}
+					rotation={[ Math.PI / 2, 0, 1.51 ]}
+					scale={0.01}
+					visible={isVisible}
+				>
 					<primitive object={nodes.mixamorigHips_1} />
 					<skinnedMesh
 						name="Bang001"
@@ -209,7 +216,6 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 						material={materials['hologram alternative hair']}
 						skeleton={nodes.Bang001.skeleton}
 						frustumCulled={false}
-						
 					/>
 					<skinnedMesh
 						name="Biker_Jeans001"
@@ -595,11 +601,13 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 					geometry={nodes.Monitor.geometry}
 					material={materials.hologram}
 					position={[ -0.18, 0.73, -0.29 ]}
-					onClick={e => (e.stopPropagation(), e.delta <= 2 && api.refresh(e.object).fit())}
+					onClick={(e) => (e.stopPropagation(), e.delta <= 2 && api.refresh(e.object).fit())}
 					onPointerMissed={(e) => e.button === 0 && api.refresh().fit()}
-					
-
 				/>
+				<mesh position={[ -0.18, 1, -0.24 ]} rotation={[ -0.05, 0, 0 ]}>
+					<planeBufferGeometry attach="geometry" args={[ 0.6, 0.35 ]} />
+					<meshBasicMaterial attach="material" map={textureImg} />
+				</mesh>
 				<mesh
 					name="LED_TV"
 					geometry={nodes.LED_TV.geometry}
