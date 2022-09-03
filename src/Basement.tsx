@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import React, { useRef, useMemo, useLayoutEffect, useState } from 'react';
+import React, { useRef, useMemo, useLayoutEffect, useState, useEffect } from 'react';
 import { useGLTF, useAnimations, useBounds } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import img from './img/screenMyWeb.png';
@@ -102,24 +102,34 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 
 	const [ isVisible, setIsVisible ] = useState(false);
 
+	
+
 	const api = useBounds();
 
-	// useLayoutEffect(() => {
-	// 	actions['Typing (5)|A|Layer0']?.play();
-	// 	actions['Armature|mixamo.com|Layer0.001']?.play()
+	useLayoutEffect(() => {
+		actions['Typing (5)|A|Layer0']?.play();
+		actions['Armature|mixamo.com|Layer0.001']?.play()
 
-	// 	const startAnimation = setTimeout(() => {
-	// 		setIsVisible(true);
-	// 	}, 17000);
-	// 	const endAnimation = setTimeout(() => {
-	// 		setIsVisible(false);
-	// 		actions['Armature|mixamo.com|Layer0.001']?.stop()
-	// 	}, 20400);
-	// 	return () => {
-	// 		clearTimeout(startAnimation);
-	// 		clearTimeout(endAnimation)
-	// 	}
-	// }, [actions]);
+		const startAnimation = setTimeout(() => {
+			setIsVisible(true);
+		}, 17000);
+		const endAnimation = setTimeout(() => {
+			setIsVisible(false);
+			actions['Armature|mixamo.com|Layer0.001']?.stop()
+		}, 20400);
+		return () => {
+			clearTimeout(startAnimation);
+			clearTimeout(endAnimation)
+		}
+	}, [actions]);
+
+	//hover on monitor
+	const [hovered, setHovered] = useState(false);
+
+	useEffect(() => {
+		document.body.style.cursor = hovered ? 'pointer' : 'auto'
+	  }, [hovered])
+	  
 
 	return (
 		<group ref={group} {...props} dispose={null}>
@@ -603,6 +613,8 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 					position={[ -0.18, 0.73, -0.29 ]}
 					onClick={(e) => (e.stopPropagation(), e.delta <= 2 && api.refresh(e.object).fit())}
 					onPointerMissed={(e) => e.button === 0 && api.refresh().fit()}
+					onPointerOver={() => setHovered(true)}
+					onPointerOut={() => setHovered(false)}
 				/>
 				<mesh position={[ -0.18, 1, -0.24 ]} rotation={[ -0.05, 0, 0 ]}>
 					<planeBufferGeometry attach="geometry" args={[ 0.6, 0.35 ]} />
@@ -614,6 +626,7 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 					material={materials.hologram}
 					position={[ 0.46, 0.73, -0.18 ]}
 					rotation={[ 0, -0.46, 0 ]}
+					
 				/>
 				<mesh
 					name="Klavesnice"
