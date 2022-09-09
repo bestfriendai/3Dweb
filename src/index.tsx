@@ -3,6 +3,8 @@ import React from 'react';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Canvas } from '@react-three/fiber';
+import LoadingScreen from './LoadingScreen';
+import './index.css';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
@@ -12,6 +14,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
 		>
 			<App />
 		</Canvas>
+		<LoadingScreen />
 	</React.StrictMode>
 );
 

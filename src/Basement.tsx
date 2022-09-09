@@ -2,8 +2,10 @@ import * as THREE from 'three';
 import React, { useRef, useMemo, useLayoutEffect, useState, useEffect } from 'react';
 import { useGLTF, useAnimations, useBounds } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import img from './img/screenMyWeb.png';
+import page from './img/screenMyWeb.png';
+import desktop from './img/pulpit.png';
 import { useLoader } from '@react-three/fiber';
+import { Howl } from 'howler';
 
 type GLTFResult = GLTF & {
 	nodes: {
@@ -90,33 +92,43 @@ interface GLTFAction extends THREE.AnimationClip {
 	name: ActionName;
 }
 
-export function Basement(props: JSX.IntrinsicElements['group']) {
+export function Basement(props: JSX.IntrinsicElements['group'] ) {
 	const group = useRef<THREE.Group>(null);
 	const { nodes, materials, animations, scene } = useGLTF(
 		'/myProjectWebHologramDecimate-processed.glb'
 	) as GLTFResult;
 	const { actions } = useAnimations(animations, group);
-	const textureImg = useLoader(THREE.TextureLoader, img);
+	const pageImg = useLoader(THREE.TextureLoader, page);
+	const desktopImg = useLoader(THREE.TextureLoader, desktop);
 
 	// useMemo(() => scene.traverse((obj) => (obj.frustumCulled = false)), [ scene ]);
 
+	const api = useBounds();
+
 	const [ isVisible, setIsVisible ] = useState(false);
 
-	
+	const hologram = new Howl({
+		src: [require('./assets/audio/hologramEffectEren.mp3')],
+		volume: 0.4,
+	});
 
-	const api = useBounds();
+	const eren = new Howl({
+		src: [require('./assets/audio/Eren Tatakae Sound.mp3')],
+		volume: 0.5,
+	})
 
 	useLayoutEffect(() => {
 		actions['Typing (5)|A|Layer0']?.play();
-		actions['Armature|mixamo.com|Layer0.001']?.play()
-
+		setTimeout(() => actions['Armature|mixamo.com|Layer0.001']?.play(), 60000)
 		const startAnimation = setTimeout(() => {
 			setIsVisible(true);
-		}, 17000);
+			hologram.play();
+			eren.play();
+		}, 77000);
 		const endAnimation = setTimeout(() => {
 			setIsVisible(false);
 			actions['Armature|mixamo.com|Layer0.001']?.stop()
-		}, 20400);
+		}, 80400);
 		return () => {
 			clearTimeout(startAnimation);
 			clearTimeout(endAnimation)
@@ -618,7 +630,7 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 				/>
 				<mesh position={[ -0.18, 1, -0.24 ]} rotation={[ -0.05, 0, 0 ]}>
 					<planeBufferGeometry attach="geometry" args={[ 0.6, 0.35 ]} />
-					<meshBasicMaterial attach="material" map={textureImg} />
+					<meshBasicMaterial attach="material" map={pageImg} />
 				</mesh>
 				<mesh
 					name="LED_TV"
@@ -628,6 +640,10 @@ export function Basement(props: JSX.IntrinsicElements['group']) {
 					rotation={[ 0, -0.46, 0 ]}
 					
 				/>
+				<mesh position={[ .45, 1, -.164 ]} rotation={[ 0, -.46, 0 ]}>
+					<planeBufferGeometry attach="geometry" args={[ 0.57, 0.33 ]} />
+					<meshBasicMaterial attach="material" map={desktopImg} />
+				</mesh>
 				<mesh
 					name="Klavesnice"
 					geometry={nodes.Klavesnice.geometry}

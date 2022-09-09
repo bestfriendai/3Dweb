@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import React, { Suspense, useRef } from 'react';
+import React, { Suspense, useRef, useEffect } from 'react';
 
 import { OrbitControls, useHelper, Bounds, PerspectiveCamera } from '@react-three/drei';
 import { angleToRadians } from './utils/angle';
@@ -8,7 +8,31 @@ import { useControls } from 'leva';
 import Basement from './Basement';
 import { SpotLight, SpotLightHelper } from 'three';
 
+import { Howl } from 'howler';
+
 function App() {
+	// when click everywhere start autoplay on page
+	// const hologram = new Howl({
+	// 	src: [ require('./assets/audio/hologramEffectMain.mp3') ],
+	// 	volume: 0.4,
+	// 	loop: true
+	// });
+	// let userInteraction = 0;
+	// useEffect(() => {
+	// 	document.addEventListener('click', () => {
+	// 		if (userInteraction) return;
+	// 		userInteraction++;
+	// 		hologram.play();
+	// 	});
+
+	// 	return () => {
+	// 		document.removeEventListener('click', () => {
+	// 			if (userInteraction) return;
+	// 			userInteraction++;
+	// 			hologram.play();
+	// 		});
+	// 	};
+	// }, []);
 	return (
 		<React.Fragment>
 			<spotLight
