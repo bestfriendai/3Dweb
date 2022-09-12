@@ -12,3 +12,7 @@ if you just want to see it you can download Node.js and run the following comman
 
     # Run the local server at localhost:8080
     npm start
+    
+Or can click this link (but i don't know if it works)
+
+https://materka11.github.io/3Dweb
