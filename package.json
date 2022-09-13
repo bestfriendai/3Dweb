@@ -40,6 +40,5 @@
 	"devDependencies": {
 		"@types/howler": "^2.2.7",
 		"howler": "^2.2.3"
-	},
-	"homepage": "https://materka11.github.io/3Dweb"
+	}
 }
